@@ -4,7 +4,8 @@ from django.http import *
 from dict import *
 
 def home(request):
-    return TemplateResponse(request, 'home.html', {})
+    text = request.GET.get('t', '')
+    return TemplateResponse(request, 'home.html', {'text':text})
     
 def translate(request):
     if 'q' in request.GET:
