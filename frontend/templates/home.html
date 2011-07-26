@@ -13,6 +13,8 @@
           content=""/>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://static.suminb.com/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="http://static.suminb.com/jquery.autoresize.min.js"></script>
     
     <!-- Webfont provided by fontface.kr -->
     <script src="http://www.google.com/jsapi"></script>
@@ -20,8 +22,8 @@
      google.load( "webfont", "1" );
      google.setOnLoadCallback(function() {
       WebFont.load({ custom: {
-       families: [ "NanumGothic", "NanumGothicBold" ],
-       urls: [ "http://fontface.kr/NanumGothic/css", "http://fontface.kr/NanumGothicBold/css" ]
+       families: [ "NanumGothic", "NanumGothicBold", "NanumMyeongjo" ],
+       urls: [ "http://fontface.kr/NanumGothic/css", "http://fontface.kr/NanumGothicBold/css", "http://fontface.kr/NanumMyeongjo/css" ]
       }});
      });
     </script>
@@ -38,21 +40,65 @@
             <div style="text-align: right;">
                 <input type="submit" value="변환하기"/>
             </div>
-            <textarea id="source" onkeyup="resizeTextarea(this)">{{ text }}</textarea>
+            <textarea id="source">{{ text }}</textarea>
         </form>
     </div>
     <div id="column2">
-        <div id="result"></div>
+        <pre id="result"></pre>
+    </div>
+    
+    <div id="page-url">
+        <h3>이 페이지 주소</h3>
+        <div></div>
     </div>
     
     
     <script>
     window.onload = function() {
+        // The following code was copied from
+        // http://stackoverflow.com/questions/2161906/handle-url-anchor-change-event-in-js
+        if ("onhashchange" in window) { // event supported?
+            window.onhashchange = function () {
+                hashChanged(window.location.hash);
+            }
+        }
+        else { // event not supported:
+            var storedHash = window.location.hash;
+            window.setInterval(function () {
+                if (window.location.hash != storedHash) {
+                    storedHash = window.location.hash;
+                    hashChanged(storedHash);
+                }
+            }, 100);
+        }
+        
+        hashChanged(window.location.hash ? window.location.hash : "");
+        
+        $("#source").autoResize({
+            // On resize:
+            onResize : function() {
+                $(this).css({opacity:0.8});
+            },
+            // After resize:
+            animateCallback : function() {
+                $(this).css({opacity:1});
+            },
+            // Quite slow animation:
+            animateDuration : 300,
+            // More extra space:
+            extraSpace : 40
+        }).trigger("change");
+    }
+    
+    function onchangeTextarea(t) {
+        console.log("textarea changed");
     }
     
     function resizeTextarea(t) {
+        console.log("textarea onkeyup");
+        console.log(t.cols);
         a = t.value.split('\n');
-        b=1;
+        b = 1;
         for (x=0;x < a.length; x++) {
             if (a[x].length >= t.cols) b+= Math.floor(a[x].length/t.cols);
         }
@@ -61,10 +107,13 @@
     }
     
     function translate() {
+        var source = $("#source").val();
         $.get("/translate", {
-                q: $("#source").val()
+                q: source
             }, function(response) {
                 displayResult(response);
+                //displayURL(source);
+                changeURL(source);
             }
         ).error(function(response) {
                 console.log(response);
@@ -77,6 +126,29 @@
     function displayResult(result) {
         $("#result").html(result);
     }
+    
+    function displayURL(source) {
+        if(source.length <= 64) {
+            var url = $.sprintf("%s#t=%s", window.location.origin, encodeURIComponent(source));
+    
+            $("#page-url").css("display", "block");
+            $("#page-url div").html($.sprintf("<a href=\"%s\">%s</a>", url, url));
+        }
+    }
+    
+    function changeURL(source) {
+        if(source.length < 256) {
+            window.location.hash = $.sprintf("#t=%s", encodeURIComponent(source));
+        }
+    }
+    
+    function hashChanged(hash) {
+        if(hash.match(/^#t=/)) {
+            $("#source").val(decodeURIComponent(hash.substring(3)));
+            translate();
+        }
+    }
+
     </script>
     
     <script type="text/javascript">

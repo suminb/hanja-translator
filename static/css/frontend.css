@@ -12,10 +12,21 @@ h1, h2, h3 {
     margin: 0 1em;
 }
 
-textarea#source {
+#source {
+    display: block;
     width: 99%;
     height: 8em;
+    font-size: 10pt;
 }
 
-div#result {
+#result {
+    font-size: 10pt;
+    white-space: pre-wrap;
+}
+
+#page-url {
+    clear: both;
+    display: none;
+    width: 100%;
+    word-wrap: break-word;
 }
