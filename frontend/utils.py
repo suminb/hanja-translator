@@ -46,9 +46,6 @@ class Hanja:
     
     @staticmethod
     def translate_syllable(previous, current):
-        p = hanja_table[previous] if previous in hanja_table else previous
-        c = hanja_table[current] if current in hanja_table else current
-        
         if current in hanja_table:
             if previous in hanja_table: 
                 return hanja_table[current]
