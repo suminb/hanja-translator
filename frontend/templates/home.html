@@ -119,7 +119,7 @@
     function translate() {
         var source = $("#source").val();
         $.get("/translate", {
-                q: source
+                t: source
             }, function(response) {
                 displayResult(response);
                 //displayURL(source);
@@ -147,9 +147,7 @@
     }
     
     function changeURL(source) {
-        if(source.length < 256) {
-            window.location.hash = $.sprintf("#t=%s", encodeURIComponent(source));
-        }
+        window.location.hash = source.length < 256 ? $.sprintf("#t=%s", encodeURIComponent(source)) : '';
     }
     
     function hashChanged(hash) {
