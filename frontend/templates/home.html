@@ -37,11 +37,11 @@
     <p>한자를 한글로 읽어주는 서비스입니다.</p>
     
     <div id="column1">    
-        <form method="get" action="/translate" onsubmit="return translate()">
+        <form method="get">
             <div style="text-align: right;">
-                <input type="submit" value="변환하기"/>
+                <input type="button" value="변환하기" onclick="_translate()"/>
             </div>
-            <textarea id="source" name="t">{{ text }}</textarea>
+            <textarea id="source">{{ text }}</textarea>
         </form>
     </div>
     <div id="column2">
@@ -64,7 +64,7 @@
     </div>
     
     
-    <script>
+    <script type="text/javascript">
     window.onload = function() {
         // The following code was copied from
         // http://stackoverflow.com/questions/2161906/handle-url-anchor-change-event-in-js
@@ -117,7 +117,7 @@
         if (b > t.rows) t.rows = b;
     }
     
-    function translate() {
+    function _translate() {
         var source = $("#source").val();
         $.get("/translate", {
                 t: source
@@ -131,7 +131,7 @@
             }
         );
         
-        return false;
+        //return false;
     }
     
     function displayResult(result) {
