@@ -16,10 +16,12 @@ h1, h2, h3 {
     display: block;
     width: 99%;
     height: 8em;
+    font-family: NanumGothic, sans-serif;
     font-size: 10pt;
 }
 
 #result {
+    font-family: NanumGothic, sans-serif;
     font-size: 10pt;
     white-space: pre-wrap;
 }

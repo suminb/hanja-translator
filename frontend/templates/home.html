@@ -65,6 +65,14 @@
     
     
     <script type="text/javascript">
+    // Example statements; one of these will be shown upon launch (if no `t` value is given)
+    var examples = [
+        "大韓民國은 民主共和國이다.",
+        "大韓民國의 主權은 國民에게 있고, 모든 權力은 國民으로부터 나온다.",
+        "大韓民國의 國民이 되는 요건은 法律로 정한다.",
+        "國家는 法律이 정하는 바에 의하여 在外國民을 보호할 義務를 진다."
+    ];
+
     window.onload = function() {
         // The following code was copied from
         // http://stackoverflow.com/questions/2161906/handle-url-anchor-change-event-in-js
@@ -123,7 +131,7 @@
                 t: source
             }, function(response) {
                 displayResult(response);
-                //displayURL(source);
+                displayURL(source);
                 changeURL(source);
             }
         ).error(function(response) {
@@ -131,7 +139,15 @@
             }
         );
         
-        //return false;
+        return false;
+    }
+
+    function displayExample() {
+        // Randomly chooses an example sentence
+        var statement = examples[Math.floor(Math.random() * examples.length)];
+
+        $("#source").html(statement);
+        _translate();
     }
     
     function displayResult(result) {
@@ -154,7 +170,10 @@
     function hashChanged(hash) {
         if(hash.match(/^#t=/)) {
             $("#source").val(decodeURIComponent(hash.substring(3)));
-            translate();
+            _translate();
+        }
+        else {
+            displayExample();
         }
     }
 
