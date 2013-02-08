@@ -143,5 +143,3 @@ LOGGING = {
         },
     }
 }
-
-import dbsettings
