@@ -85,11 +85,11 @@ class Hanja:
         return ''.join(map(lambda w: Hanja.translate_word(w, mode), Hanja.split_hanja(text)))
 
     @staticmethod
-    def translate_word(word, mode):
+    def translate_word(word, mode, format='<span class="hanja">%s</span><span class="hangul">(%s)</span>'):
         tw = ''.join(map(Hanja.translate_syllable, u' '+word[:-1], word))
 
         if mode == 'combination' and Hanja.is_hanja(word[0]) == 1:
-            return '%s(%s)' % (word, tw)
+            return format % (word, tw)
         else:
             return tw
 
