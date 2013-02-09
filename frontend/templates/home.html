@@ -68,6 +68,9 @@
             <noscript><a href="http://flattr.com/thing/1127718/-" target="_blank">
             <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript>
         </div> 
+        <div id="copyright">
+            Copyright &copy; 2011-2013 <a href="http://labs.suminb.com">Sumin's Labs</a>
+        </div>
     </div>
     
     
@@ -144,8 +147,8 @@
                 t: source
             }, function(response) {
                 displayResult(response);
-                displayURL(source);
-                changeURL(source);
+                //displayURL(source);
+                //changeURL(source);
             }
         ).error(function(response) {
                 console.log(response);

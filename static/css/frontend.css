@@ -1,6 +1,7 @@
 body {
     font-family: NanumGothic, sans-serif;
     font-size: 11pt;
+    color: #505050;
 }
 
 h1, h2, h3 {
@@ -19,12 +20,14 @@ h1, h2, h3 {
     height: 8em;
     font-family: NanumGothic, sans-serif;
     font-size: 11pt;
+    color: #303030;
 }
 
 #result {
     font-family: NanumGothic, sans-serif;
     font-size: 11pt;
     white-space: pre-wrap;
+    color: #303030;
 }
 
 #page-url {
@@ -38,5 +41,10 @@ h1, h2, h3 {
 }
 
 #footer {
-    margin: 1em 0 0 0;
+    margin: 2em 0 0 0;
+}
+#copyright {
+    margin-top: 1em;
+    text-align: center;
+    font-size: 9pt;
 }
