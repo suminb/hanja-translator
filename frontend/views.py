@@ -9,8 +9,9 @@ def home(request):
     
 def translate(request):
     if 't' in request.GET:
+    	mode = request.GET['m']
         text = request.GET['t']
-        result = Hanja.translate(text)
+        result = Hanja.translate(text, mode)
 
         return HttpResponse(result)
     else:

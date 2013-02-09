@@ -39,6 +39,10 @@
     <div id="column1">    
         <form method="get">
             <div style="text-align: right;">
+                <input id="radio-cms" type="radio" name="m" value="substitution"/>
+                <label for="radio-cms">한글</label>
+                <input id="radio-cmc" type="radio" name="m" value="combination"/>
+                <label for="radio-cmc">한글(한자)</label>
                 <input type="button" value="변환하기" onclick="_translate()"/>
             </div>
             <textarea id="source">{{ text }}</textarea>
@@ -110,6 +114,10 @@
             // More extra space:
             extraSpace : 40
         }).trigger("change");
+
+        // $("input:radio[name=conversion-mode]").click(function() {
+        //     var value = $(this).val();
+        // });
     }
     
     function onchangeTextarea(t) {
@@ -129,8 +137,10 @@
     }
     
     function _translate() {
+        var mode = $("#radio-cmc").is(":checked") ? "combination" : "substitution";
         var source = $("#source").val();
         $.get("/translate", {
+                m: mode,
                 t: source
             }, function(response) {
                 displayResult(response);

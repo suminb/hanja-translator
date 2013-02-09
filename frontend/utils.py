@@ -53,8 +53,46 @@ class Hanja:
                 return Hangul.dooeum(previous, hanja_table[current])
 
         return current
+
+    @staticmethod
+    def split_hanja(text):
+        """주어진 문장을 한자로 된 구역과 그 이외의 문자로 된 구역으로 분리"""
+        
+        # TODO: Can we make this a bit prettier?
+        if len(text) == 0:
+            yield text
+        else:
+            ch = text[0]
+            bucket = [ch]
+            prev_state = Hanja.is_hanja(ch)
+
+            for ch in text[1:]:
+                state = Hanja.is_hanja(ch)
+
+                if prev_state != state:
+                    yield ''.join(bucket)
+                    bucket = [ch]
+                else:
+                    bucket.append(ch)
+
+                prev_state = state
+
+            yield ''.join(bucket)
+
         
     @staticmethod
-    def translate(text):
-        return ''.join(map(Hanja.translate_syllable, u' '+text[:-1], text))
-       
+    def translate(text, mode):
+        return ''.join(map(lambda w: Hanja.translate_word(w, mode), Hanja.split_hanja(text)))
+
+    @staticmethod
+    def translate_word(word, mode):
+        tw = ''.join(map(Hanja.translate_syllable, u' '+word[:-1], word))
+
+        if mode == 'combination' and Hanja.is_hanja(word[0]) == 1:
+            return '%s(%s)' % (word, tw)
+        else:
+            return tw
+
+    @staticmethod
+    def is_hanja(ch):
+        return ch in hanja_table
